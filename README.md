@@ -1,2 +1,3 @@
 # gndxdev-bot
-A Twitch Bot 
+
+gndxdev-bot for twitch
