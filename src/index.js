@@ -1,5 +1,7 @@
 const tmi = require("tmi.js");
 const cron = require("node-cron");
+const randomMsg = require('./utils/randomMsg');
+const commands = require('./config/commands');
 require("dotenv").config();
 
 const welcomeList = ["hola", "buenas", "saludos"];
@@ -18,32 +20,40 @@ const sendMessage = (target, text, list, message) => {
     if (includes) client.say(target, message);
     return text.includes(t);
   });
-}
+};
 
 cron.schedule("*/10 * * * *", () => {
-  client.say(`#${process.env.CHANNELS_NAME}`, "¡hola!");
+  client.say(`#${process.env.CHANNELS_NAME}`, randomMsg());
 });
 
-const commands = (target, msg) => {
+const commandResolve = (target, msg) => {
   switch (msg) {
-    case '!fb':
-      client.say(target, '!fb message');
-      break;
-    case '!tw':
-      client.say(target, '!tw message');
-      break;
     case '!merch':
-      client.say(target, '!merch message');
+      client.say(target, commands.merch);
       break;
-  }
-}
+    case '!patreon':
+      client.say(target, commands.patreon);
+      break;
+    case '!blog':
+      client.say(target, commands.blog);
+      break;
+    case '!social':
+      client.say(target, commands.social);
+      break;
+    case '!courses':
+      client.say(target, commands.courses);
+      break;
+    case '!twitch':
+      client.say(target, commands.twitch);
+      break;
+  };
+};
 
 client.on("message", (target, context, msg, self) => {
   if (self) return;
   const text = msg.toLowerCase();
   if (context.badges.broadcaster == 1) {
-    console.log(msg)
-    commands(target, msg);
+    commandResolve(target, msg);
   }
   sendMessage(target, text, welcomeList, `@${context.username} Hola!`);
 });
