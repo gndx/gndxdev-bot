@@ -22,7 +22,7 @@ const sendMessage = (target, text, list, message) => {
   });
 };
 
-cron.schedule("*/10 * * * *", () => {
+cron.schedule("*/8 * * * *", () => {
   client.say(`#${process.env.CHANNELS_NAME}`, randomMsg());
 });
 
@@ -44,6 +44,9 @@ const commandResolve = (target, msg) => {
       client.say(target, commands.courses);
       break;
     case '!twitch':
+      client.say(target, commands.twitch);
+      break;
+    case '!youtube':
       client.say(target, commands.twitch);
       break;
   };
