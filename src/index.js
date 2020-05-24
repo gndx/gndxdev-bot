@@ -32,29 +32,9 @@ cron.schedule("*/8 * * * *", () => {
 });
 
 const commandResolve = (target, msg) => {
-  switch (msg) {
-    case '!merch':
-      client.say(target, commands.merch);
-      break;
-    case '!patreon':
-      client.say(target, commands.patreon);
-      break;
-    case '!blog':
-      client.say(target, commands.blog);
-      break;
-    case '!social':
-      client.say(target, commands.social);
-      break;
-    case '!courses':
-      client.say(target, commands.courses);
-      break;
-    case '!twitch':
-      client.say(target, commands.twitch);
-      break;
-    case '!youtube':
-      client.say(target, commands.youtube);
-      break;
-  };
+  const commandMessage = msg.replace("!", "");
+  const command = commandMessage in commands ? command[commandMessage] : null;
+  if (command) client.say(target, commands[command]);
 };
 
 client.on("message", (target, context, msg, self) => {
