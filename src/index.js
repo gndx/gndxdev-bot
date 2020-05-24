@@ -33,8 +33,8 @@ cron.schedule("*/8 * * * *", () => {
 
 const commandResolve = (target, msg) => {
   const commandMessage = msg.replace("!", "");
-  const command = commandMessage in commands ? command[commandMessage] : null;
-  if (command) client.say(target, commands[command]);
+  const command = commandMessage in commands ? commands[commandMessage] : null;
+  if (command) client.say(target, command);
 };
 
 client.on("message", (target, context, msg, self) => {
