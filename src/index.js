@@ -5,6 +5,8 @@ const commands = require('./config/commands');
 require("dotenv").config();
 
 const welcomeList = ["hola", "buenas", "saludos"];
+const username = process.env.USERNAME;
+const channel = process.env.CHANNELS_NAME;
 
 const client = new tmi.client({
   identity: {
@@ -23,7 +25,7 @@ const sendMessage = (target, text, list, message) => {
 };
 
 cron.schedule("*/8 * * * *", () => {
-  client.say(`#${process.env.CHANNELS_NAME}`, randomMsg());
+  client.say(`#${channel}`, randomMsg());
 });
 
 const commandResolve = (target, msg) => {
@@ -55,7 +57,7 @@ const commandResolve = (target, msg) => {
 client.on("message", (target, context, msg, self) => {
   if (self) return;
   const text = msg.toLowerCase();
-  if (context.badges.broadcaster == 1) {
+  if (context.username == username) {
     commandResolve(target, msg);
   }
   sendMessage(target, text, welcomeList, `@${context.username} Hola!`);
