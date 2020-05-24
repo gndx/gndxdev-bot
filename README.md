@@ -8,8 +8,21 @@ gndxdev-bot send messages to Twitch.
 npm run dev
 ```
 
+### Use
+
+- Configure your environment variables
+- Set your greetings ands commands
+
+```bash
+npm run start
+```
+
 ### Contributing
 If someone wants to add or improve something, I invite you to collaborate directly in this repository: [gndxdev-bot](https://github.com/gndx/gndxdev-bot/)
+
+### Contributors
+
+- IOSamuel - [https://github.com/iosamuel](https://github.com/iosamuel)
 
 ### License
 gndxdev-bot is released under the [MIT License](https://opensource.org/licenses/MIT).
