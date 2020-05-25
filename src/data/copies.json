@@ -7,5 +7,10 @@
     "courses": "🎓📗 Mis cursos en Platzi: https://platzi.com/teachers/gndx/",
     "twitch": "imGlitch Recuerda todos los domingos a las 6:00 P.M. Hablo de tecnología en vivo en este canal, ¡Sígueme!",
     "youtube": "EarthDay Suscríbete a mi canal de YouTube donde comparto mis conferencias https://youtube.com/c/oscarbarajas"
+  },
+  "greetings": {
+    "welcome": "¡Bienvenidos! ;)",
+    "hello": "imGlitch Hola",
+    "subs": "¡Gracias por suscribirte! BloodTrail"
   }
 }

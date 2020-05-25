@@ -1,7 +1,9 @@
+const copies = require('../data/copies.json');
+
 const greetings = {
-  welcome: '¡Bienvenidos! ;)',
-  hello: 'imGlitch Hola',
-  subs: '¡Gracias por suscribirte! BloodTrail'
+  welcome: copies.greetings.welcome,
+  hello: copies.greetings.hello,
+  subs: copies.greetings.subs
 };
 
 module.exports = greetings;
