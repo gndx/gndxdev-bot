@@ -22,7 +22,8 @@ If someone wants to add or improve something, I invite you to collaborate direct
 
 ### Contributors
 
-- IOSamuel - [https://github.com/iosamuel](https://github.com/iosamuel)
+- IOSamuel : [https://github.com/iosamuel](https://github.com/iosamuel)
+- Manuel Galindez : [https://github.com/jgalianoz](https://github.com/jgalianoz)
 
 ### License
 gndxdev-bot is released under the [MIT License](https://opensource.org/licenses/MIT).
