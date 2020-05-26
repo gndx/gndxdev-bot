@@ -85,7 +85,7 @@ client.on("message", async (target, context, msg, self) => {
   sendMessage(target, text, welcomeList, `@${context.username} ${greetings.hello}`);
 });
 
-client.on("subscription", (channel, username, method, message, userstate) => {
+client.on("subscription", (channel, username) => {
   client.say(channel, `${username}, ${greetings.subs}`);
 });
 
