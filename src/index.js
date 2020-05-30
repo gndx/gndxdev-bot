@@ -1,18 +1,24 @@
+// Modules
 const tmi = require("tmi.js");
 const Twitter = require('twitter');
 const cron = require("node-cron");
 const admin = require("firebase-admin");
+
+// Utils
 const randomMsg = require('./utils/randomMsg');
 const random = require('./utils/random');
+
+// Config
 const commands = require('./config/commands');
 const greetings = require('./config/greetings');
+
 require("dotenv").config();
 
 const serviceAccount = require("./serviceAccountKey.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://gndxtwitchbot.firebaseio.com"
+  databaseURL: process.env.DATABASE_URL
 });
 
 const clientTwitter = new Twitter({
@@ -71,7 +77,7 @@ const commandResolve = async (target, msg) => {
   if (commandMessage.includes('twbot')) {
     let msgTwitter = msg.substr(6);
     const msg2 = `${msgTwitter} en vivo: https://twitch.tv/gndxdev #EStreamerCoders`;
-    clientTwitter.post('statuses/update', { status: msg2 }, function (error, tweet, response) {
+    clientTwitter.post('statuses/update', { status: msg2 }, function (error, tweet) {
       if (error) throw error;
       const tweetUrl = `https://twitter.com/i/web/status/${tweet.id_str}`;
       client.say(target, `¡Hey dale RT! MrDestructoid ${tweetUrl}`);
