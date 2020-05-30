@@ -1,4 +1,5 @@
 const tmi = require("tmi.js");
+const Twitter = require('twitter');
 const cron = require("node-cron");
 const admin = require("firebase-admin");
 const randomMsg = require('./utils/randomMsg');
@@ -12,6 +13,13 @@ const serviceAccount = require("./serviceAccountKey.json");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://gndxtwitchbot.firebaseio.com"
+});
+
+const clientTwitter = new Twitter({
+  consumer_key: process.env.CONSUMER_KEY,
+  consumer_secret: process.env.CONSUMER_SECRECT,
+  access_token_key: process.env.TOKEN_KEY,
+  access_token_secret: process.env.TOKEN_SECRET
 });
 
 const db = admin.firestore();
@@ -60,7 +68,15 @@ const commandResolve = async (target, msg) => {
     let randomUser = random(winner);
     client.say(target, `BloodTrail El Ganador es @${randomUser.username} HolidayPresent`);
   }
-
+  if (commandMessage.includes('twbot')) {
+    let msgTwitter = msg.substr(6);
+    const msg2 = `${msgTwitter} en vivo: https://twitch.tv/gndxdev #EStreamerCoders`;
+    clientTwitter.post('statuses/update', { status: msg2 }, function (error, tweet, response) {
+      if (error) throw error;
+      const tweetUrl = `https://twitter.com/i/web/status/${tweet.id_str}`;
+      client.say(target, `¡Hey dale RT! MrDestructoid ${tweetUrl}`);
+    });
+  }
   const command = commandMessage in commands ? commands[commandMessage] : null;
   if (command) client.say(target, command);
 };
@@ -69,6 +85,7 @@ client.on("message", async (target, context, msg, self) => {
   if (self) return;
   const text = msg.toLowerCase();
   const commandRaffle = text.replace("!", "");
+
   if (commandRaffle === 'rifa') {
     if (userList.includes(context.username)) {
       client.say(target, `@${context.username}, ¡Ya estas particiando BibleThump!`)

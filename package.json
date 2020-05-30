@@ -7,7 +7,8 @@
     "dotenv": "^8.2.0",
     "firebase-admin": "^8.12.1",
     "node-cron": "^2.0.3",
-    "tmi.js": "^1.5.0"
+    "tmi.js": "^1.5.0",
+    "twitter": "^1.7.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
