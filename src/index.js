@@ -100,6 +100,7 @@ client.on("message", async (target, context, msg, self) => {
     commandResolve(target, msg);
   }
   sendMessage(target, text, welcomeList, `@${context.username} ${greetings.hello}`);
+  sendMessage(target, text, goodbyeList, `@${context.username} ${greetings.bye}`);
 });
 
 client.on("subscription", (channel, username) => {
