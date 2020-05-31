@@ -25,6 +25,7 @@ const clientTwitter = new Twitter({
 const db = admin.firestore();
 
 const welcomeList = ["hola", "buenas", "saludos"];
+const goodbyeList = ["adios", "bye"];
 const USERNAME = process.env.USERNAME;
 const BOTUSERNAME = process.env.BOT_USERNAME;
 const CHANNEL = process.env.CHANNELS_NAME;
