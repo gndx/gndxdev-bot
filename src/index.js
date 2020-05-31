@@ -9,10 +9,11 @@ const greetings = require('./config/greetings');
 require("dotenv").config();
 
 const serviceAccount = require("./serviceAccountKey.json");
+const URLDATABASE = process.env.URLDATABASE;
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://gndxtwitchbot.firebaseio.com"
+  databaseURL: URLDATABASE
 });
 
 const clientTwitter = new Twitter({
