@@ -88,7 +88,7 @@ client.on("message", async (target, context, msg, self) => {
 
   if (commandRaffle === 'rifa') {
     if (userList.includes(context.username)) {
-      client.say(target, `@${context.username}, ¡Ya estas particiando BibleThump!`)
+      client.say(target, `@${context.username}, ¡Ya estas participando BibleThump!`)
     } else {
       userList.push(context.username);
       await db.collection('twitch').add({ username: context.username });
