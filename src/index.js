@@ -2,9 +2,11 @@ const tmi = require("tmi.js");
 const Twitter = require('twitter');
 const cron = require("node-cron");
 const admin = require("firebase-admin");
+const fetchData = require('./utils/fetchData');
 const randomMsg = require('./utils/randomMsg');
 const random = require('./utils/random');
 const commands = require('./config/commands');
+const publicCmd = require('./config/publicCmd');
 const greetings = require('./config/greetings');
 require("dotenv").config();
 
@@ -55,7 +57,7 @@ const commandResolve = async (target, msg) => {
   const commandMessage = msg.replace("!", "");
   if (commandMessage === 'winner') {
     let winner = [];
-    let twitch = db.collection("twitch");
+    let twitch = db.collection("twitch2");
     let query = await twitch.orderBy("username", "asc").get()
       .then(snapshot => {
         snapshot.forEach(doc => {
@@ -74,7 +76,7 @@ const commandResolve = async (target, msg) => {
     clientTwitter.post('statuses/update', { status: msg2 }, function (error, tweet, response) {
       if (error) throw error;
       const tweetUrl = `https://twitter.com/i/web/status/${tweet.id_str}`;
-      client.say(target, `¡Hey dale RT! MrDestructoid ${tweetUrl}`);
+      client.say(target, `¡Nuevo Tweet, dale RT! MrDestructoid ${tweetUrl}`);
     });
   }
   const command = commandMessage in commands ? commands[commandMessage] : null;
@@ -84,9 +86,8 @@ const commandResolve = async (target, msg) => {
 client.on("message", async (target, context, msg, self) => {
   if (self) return;
   const text = msg.toLowerCase();
-  const commandRaffle = text.replace("!", "");
-
-  if (commandRaffle === 'rifa') {
+  const command = text.replace("!", "");
+  if (command === 'rifa') {
     if (userList.includes(context.username)) {
       client.say(target, `@${context.username}, ¡Ya estas particiando BibleThump!`)
     } else {
@@ -95,9 +96,16 @@ client.on("message", async (target, context, msg, self) => {
       client.say(target, `@${context.username}, ¡Registro exitoso! VoHiYo!`)
     }
   }
-
-  if (context.username == USERNAME) {
+  if (command === 'discord') {
+    client.say(target, publicCmd.discord);
+  }
+  if (context.username == 'gndxdev') {
     commandResolve(target, msg);
+  }
+  if (command === 'cancion') {
+    let pretzel = 'https://www.pretzel.rocks/api/v1/playing/twitch/gndxdev/';
+    let song = await fetchData(pretzel);
+    client.say(target, `@${context.username}, ${song}`);
   }
   sendMessage(target, text, welcomeList, `@${context.username} ${greetings.hello}`);
 });

@@ -7,7 +7,7 @@ const commands = {
   social: copies.commands.social,
   courses: copies.commands.courses,
   twitch: copies.commands.twitch,
-  youtube: copies.commands.youtube
+  youtube: copies.commands.youtube,
 };
 
 module.exports = commands;
