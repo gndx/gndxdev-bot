@@ -1,37 +1,14 @@
 const tmi = require("tmi.js");
-const Twitter = require('twitter');
 const cron = require("node-cron");
-const admin = require("firebase-admin");
-const fetchData = require('./utils/fetchData');
-const randomMsg = require('./utils/randomMsg');
-const random = require('./utils/random');
-const commands = require('./config/commands');
-const publicCmd = require('./config/publicCmd');
-const greetings = require('./config/greetings');
+const randomMsg = require("./utils/randomMsg");
+const greetings = require("./config/greetings");
+const Commands = require("./lib/commands");
 require("dotenv").config();
 
-const serviceAccount = require("./serviceAccountKey.json");
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://gndxtwitchbot.firebaseio.com"
-});
-
-const clientTwitter = new Twitter({
-  consumer_key: process.env.CONSUMER_KEY,
-  consumer_secret: process.env.CONSUMER_SECRECT,
-  access_token_key: process.env.TOKEN_KEY,
-  access_token_secret: process.env.TOKEN_SECRET
-});
-
-const db = admin.firestore();
-
 const welcomeList = ["hola", "buenas", "saludos"];
-const USERNAME = process.env.USERNAME;
 const BOTUSERNAME = process.env.BOT_USERNAME;
 const CHANNEL = process.env.CHANNELS_NAME;
 const PASSWORD = process.env.OAUTH_TOKEN;
-const userList = [];
 
 const client = new tmi.client({
   identity: {
@@ -40,6 +17,8 @@ const client = new tmi.client({
   },
   channels: CHANNEL.split(",")
 });
+
+const comm = new Commands(client);
 
 const sendMessage = (target, text, list, message) => {
   list.some(t => {
@@ -53,61 +32,18 @@ cron.schedule("*/8 * * * *", () => {
   client.say(`#${CHANNEL}`, randomMsg());
 });
 
-const commandResolve = async (target, msg) => {
-  const commandMessage = msg.replace("!", "");
-  if (commandMessage === 'winner') {
-    let winner = [];
-    let twitch = db.collection("twitch2");
-    let query = await twitch.orderBy("username", "asc").get()
-      .then(snapshot => {
-        snapshot.forEach(doc => {
-          winner.push(doc.data());
-        })
-      })
-      .catch(err => {
-        console.log('Error', err);
-      });
-    let randomUser = random(winner);
-    client.say(target, `BloodTrail El Ganador es @${randomUser.username} HolidayPresent`);
-  }
-  if (commandMessage.includes('twbot')) {
-    let msgTwitter = msg.substr(6);
-    const msg2 = `${msgTwitter} en vivo: https://twitch.tv/gndxdev #EStreamerCoders`;
-    clientTwitter.post('statuses/update', { status: msg2 }, function (error, tweet, response) {
-      if (error) throw error;
-      const tweetUrl = `https://twitter.com/i/web/status/${tweet.id_str}`;
-      client.say(target, `¡Nuevo Tweet, dale RT! MrDestructoid ${tweetUrl}`);
-    });
-  }
-  const command = commandMessage in commands ? commands[commandMessage] : null;
-  if (command) client.say(target, command);
-};
-
 client.on("message", async (target, context, msg, self) => {
   if (self) return;
   const text = msg.toLowerCase();
-  const command = text.replace("!", "");
-  if (command === 'rifa') {
-    if (userList.includes(context.username)) {
-      client.say(target, `@${context.username}, ¡Ya estas particiando BibleThump!`)
-    } else {
-      userList.push(context.username);
-      await db.collection('twitch').add({ username: context.username });
-      client.say(target, `@${context.username}, ¡Registro exitoso! VoHiYo!`)
-    }
-  }
-  if (command === 'discord') {
-    client.say(target, publicCmd.discord);
-  }
-  if (context.username == 'gndxdev') {
-    commandResolve(target, msg);
-  }
-  if (command === 'cancion') {
-    let pretzel = 'https://www.pretzel.rocks/api/v1/playing/twitch/gndxdev/';
-    let song = await fetchData(pretzel);
-    client.say(target, `@${context.username}, ${song}`);
-  }
-  sendMessage(target, text, welcomeList, `@${context.username} ${greetings.hello}`);
+
+  comm.resolve(context, target, text);
+
+  sendMessage(
+    target,
+    text,
+    welcomeList,
+    `@${context.username} ${greetings.hello}`
+  );
 });
 
 client.on("subscription", (channel, username) => {
@@ -115,7 +51,10 @@ client.on("subscription", (channel, username) => {
 });
 
 client.on("raided", (channel, username, viewers) => {
-  client.say(channel, `TombRaid ¡Raid!, Gracias a ${username} se han unido ${viewers} espectadores, ${greetings.welcome} PogChamp`);
+  client.say(
+    channel,
+    `TombRaid ¡Raid!, Gracias a ${username} se han unido ${viewers} espectadores, ${greetings.welcome} PogChamp`
+  );
 });
 
 client.on("connected", (addr, port) => {
