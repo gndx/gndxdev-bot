@@ -1,7 +1,7 @@
 const Twitter = require("twitter");
 const random = require("../utils/random");
-const fetchData = require("./utils/fetchData");
-const serviceAccount = require("./serviceAccountKey.json");
+const fetchData = require("../utils/fetchData");
+const serviceAccount = require("../serviceAccountKey.json");
 const admin = require("firebase-admin");
 
 const clientTwitter = new Twitter({
@@ -21,7 +21,7 @@ class CustomCommands {
     winner: { fn: this.winner, type: "private" },
     twbot: { fn: this.twbot, type: "private" },
     rifa: { fn: this.rifa, type: "public" },
-    cancion: { fn: this.cancion, type: "public" }
+    song: { fn: this.song, type: "public" }
   };
 
   db = admin.firestore();
@@ -32,8 +32,8 @@ class CustomCommands {
 
   twbot({ msg, target }) {
     let msgTwitter = msg.substr(6);
-    const msg2 = `${msgTwitter} en vivo: https://twitch.tv/gndxdev #EStreamerCoders`;
-    clientTwitter.post("statuses/update", { status: msg2 }, (error, tweet) => {
+    const tweet = `${msgTwitter} en vivo: https://twitch.tv/gndxdev #EStreamerCoders`;
+    clientTwitter.post("statuses/update", { status: tweet }, (error, tweet) => {
       if (error) throw error;
       const tweetUrl = `https://twitter.com/i/web/status/${tweet.id_str}`;
       this.client.say(
@@ -43,7 +43,7 @@ class CustomCommands {
     });
   }
 
-  async cancion({ context, target }) {
+  async song({ context, target }) {
     let pretzel = "https://www.pretzel.rocks/api/v1/playing/twitch/gndxdev/";
     let song = await fetchData(pretzel);
     this.client.say(target, `@${context.username}, ${song}`);
