@@ -17,17 +17,19 @@ admin.initializeApp({
 });
 
 class CustomCommands {
-  commands = {
-    winner: { fn: this.winner, type: "private" },
-    twbot: { fn: this.twbot, type: "private" },
-    rifa: { fn: this.rifa, type: "public" },
-    song: { fn: this.song, type: "public" }
-  };
-
-  db = admin.firestore();
-
   constructor(client) {
     this.client = client;
+
+    this.commands = {
+      winner: { fn: this.winner, type: "private" },
+      twbot: { fn: this.twbot, type: "private" },
+      rifa: { fn: this.rifa, type: "public" },
+      song: { fn: this.song, type: "public" }
+    };
+  
+    this.db = admin.firestore();
+
+    this.userList = [];
   }
 
   twbot({ msg, target }) {
@@ -49,7 +51,6 @@ class CustomCommands {
     this.client.say(target, `@${context.username}, ${song}`);
   }
 
-  userList = [];
   async rifa({ context, target }) {
     if (this.userList.includes(context.username)) {
       this.client.say(
