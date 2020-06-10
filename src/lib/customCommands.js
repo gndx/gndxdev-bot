@@ -19,16 +19,13 @@ admin.initializeApp({
 class CustomCommands {
   constructor(client) {
     this.client = client;
-
     this.commands = {
       winner: { fn: this.winner, type: "private" },
       twbot: { fn: this.twbot, type: "private" },
       rifa: { fn: this.rifa, type: "public" },
       song: { fn: this.song, type: "public" }
     };
-  
     this.db = admin.firestore();
-
     this.userList = [];
   }
 
@@ -68,8 +65,9 @@ class CustomCommands {
   }
 
   async winner({ target }) {
+    console.log('hoasd')
     let winner = [];
-    let twitch = this.db.collection("twitch2");
+    let twitch = this.db.collection("twitch");
     await twitch
       .orderBy("username", "asc")
       .get()
