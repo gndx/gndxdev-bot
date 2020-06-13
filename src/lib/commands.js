@@ -24,7 +24,7 @@ class Commands extends CustomCommands {
     if (commandKey && commandKey in allCommands) {
       const command = allCommands[commandKey];
       if (typeof command.fn === "function") {
-        await command.fn(context, target, msg);
+        await command.fn.apply(this, [context, target, msg]);
       } else if (typeof command === "string") {
         this.client.say(target, command);
       }
