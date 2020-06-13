@@ -3,6 +3,7 @@ const random = require("../utils/random");
 const fetchData = require("../utils/fetchData");
 const serviceAccount = require("../serviceAccountKey.json");
 const admin = require("firebase-admin");
+require('dotenv').config();
 
 const clientTwitter = new Twitter({
   consumer_key: process.env.CONSUMER_KEY,
@@ -19,6 +20,7 @@ admin.initializeApp({
 class CustomCommands {
   constructor(client) {
     this.client = client;
+    console.log(this.client)
     this.commands = {
       winner: { fn: this.winner, type: "private" },
       twbot: { fn: this.twbot, type: "private" },
@@ -29,7 +31,7 @@ class CustomCommands {
     this.userList = [];
   }
 
-  twbot({ msg, target }) {
+  twbot(context, target, msg) {
     let msgTwitter = msg.substr(6);
     const tweet = `${msgTwitter} en vivo: https://twitch.tv/gndxdev #EStreamerCoders`;
     clientTwitter.post("statuses/update", { status: tweet }, (error, tweet) => {
@@ -65,7 +67,6 @@ class CustomCommands {
   }
 
   async winner({ target }) {
-    console.log('hoasd')
     let winner = [];
     let twitch = this.db.collection("twitch");
     await twitch

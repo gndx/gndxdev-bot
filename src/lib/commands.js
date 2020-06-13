@@ -10,7 +10,6 @@ class Commands extends CustomCommands {
 
   async resolve(context, target, msg) {
     const commandMessage = msg.replace("!", "");
-    console.log(commandMessage)
     const privateCommands = context.username === STREAMER;
     const allCommands = {
       ...(privateCommands && this.commands),
@@ -25,7 +24,7 @@ class Commands extends CustomCommands {
     if (commandKey && commandKey in allCommands) {
       const command = allCommands[commandKey];
       if (typeof command.fn === "function") {
-        await command.fn({ context, target, msg });
+        await command.fn(context, target, msg);
       } else if (typeof command === "string") {
         this.client.say(target, command);
       }
