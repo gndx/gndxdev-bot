@@ -20,7 +20,6 @@ admin.initializeApp({
 class CustomCommands {
   constructor(client) {
     this.client = client;
-    console.log(this.client)
     this.commands = {
       winner: { fn: this.winner, type: "private" },
       twbot: { fn: this.twbot, type: "private" },
@@ -31,7 +30,7 @@ class CustomCommands {
     this.userList = [];
   }
 
-  twbot(context, target, msg) {
+  twbot(_, target, msg) {
     let msgTwitter = msg.substr(6);
     const tweet = `${msgTwitter} en vivo: https://twitch.tv/gndxdev #EStreamerCoders`;
     clientTwitter.post("statuses/update", { status: tweet }, (error, tweet) => {
