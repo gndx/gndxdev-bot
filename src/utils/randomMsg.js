@@ -1,18 +1,21 @@
-const commands = require('../config/commands');
+const commands = require("../config/commands");
 
-const messages = [
-  commands.merch,
-  commands.patreon,
-  commands.blog,
-  commands.social,
-  commands.social,
-  commands.courses,
-  commands.twitch,
-];
+const messages = [...Object.values(commands.private)];
+let messagesRandom = shuffleArray(messages);
 
 const randomMsg = () => {
-  return messages[Math.floor(Math.random() * messages.length)];
+  if (!messagesRandom.length) messagesRandom = shuffleArray(messages);
+  return messagesRandom.shift();
+};
+
+// Durstenfeld shuffle algorithm
+function shuffleArray(array) {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
 }
 
 module.exports = randomMsg;
-
