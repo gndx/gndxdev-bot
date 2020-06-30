@@ -28,7 +28,7 @@ const sendMessage = (target, text, list, message) => {
   });
 };
 
-cron.schedule("*/8 * * * *", () => {
+cron.schedule("*/7 * * * *", () => {
   client.say(`#${CHANNEL}`, randomMsg());
 });
 

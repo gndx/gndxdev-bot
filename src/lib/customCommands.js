@@ -5,6 +5,8 @@ const serviceAccount = require("../serviceAccountKey.json");
 const admin = require("firebase-admin");
 require('dotenv').config();
 
+const DB = process.env.FIRESTORE;
+
 const clientTwitter = new Twitter({
   consumer_key: process.env.CONSUMER_KEY,
   consumer_secret: process.env.CONSUMER_SECRECT,
@@ -20,7 +22,6 @@ admin.initializeApp({
 class CustomCommands {
   constructor(client) {
     this.client = client;
-    console.log(this.client)
     this.commands = {
       winner: { fn: this.winner, type: "private" },
       twbot: { fn: this.twbot, type: "private" },
@@ -44,13 +45,13 @@ class CustomCommands {
     });
   }
 
-  async song({ context, target }) {
+  async song(context, target) {
     let pretzel = "https://www.pretzel.rocks/api/v1/playing/twitch/gndxdev/";
     let song = await fetchData(pretzel);
     this.client.say(target, `@${context.username}, ${song}`);
   }
 
-  async rifa({ context, target }) {
+  async rifa(context, target) {
     if (this.userList.includes(context.username)) {
       this.client.say(
         target,
@@ -58,7 +59,7 @@ class CustomCommands {
       );
     } else {
       this.userList.push(context.username);
-      await this.db.collection("twitch").add({ username: context.username });
+      await this.db.collection(DB).add({ username: context.username });
       this.client.say(
         target,
         `@${context.username}, ¡Registro exitoso! VoHiYo!`
@@ -66,9 +67,9 @@ class CustomCommands {
     }
   }
 
-  async winner({ target }) {
+  async winner(context, target) {
     let winner = [];
-    let twitch = this.db.collection("twitch");
+    let twitch = this.db.collection(DB);
     await twitch
       .orderBy("username", "asc")
       .get()
