@@ -32,7 +32,7 @@ class CustomCommands {
     this.userList = [];
   }
 
-  twbot(context, target, msg) {
+  twbot(_, target, msg) {
     let msgTwitter = msg.substr(6);
     const tweet = `${msgTwitter} en vivo: https://twitch.tv/gndxdev #EStreamerCoders`;
     clientTwitter.post("statuses/update", { status: tweet }, (error, tweet) => {

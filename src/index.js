@@ -13,15 +13,15 @@ const PASSWORD = process.env.OAUTH_TOKEN;
 const client = new tmi.client({
   identity: {
     username: BOTUSERNAME,
-    password: PASSWORD
+    password: PASSWORD,
   },
-  channels: CHANNEL.split(",")
+  channels: CHANNEL.split(","),
 });
 
 const comm = new Commands(client);
 
 const sendMessage = (target, text, list, message) => {
-  list.some(t => {
+  list.some((t) => {
     const includes = text.replace(/ /g, "").includes(t);
     if (includes) client.say(target, message);
     return text.includes(t);
