@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "dependencies": {
     "dotenv": "^8.2.0",
-    "firebase-admin": "^9.5.0",
+    "firebase-admin": "^11.4.1",
     "node-cron": "^2.0.3",
     "node-fetch": "^2.6.0",
     "tmi.js": "^1.5.0",
