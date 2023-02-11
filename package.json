@@ -12,7 +12,7 @@
     "twitter": "^1.7.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.20"
   },
   "scripts": {
     "start": "node .",
