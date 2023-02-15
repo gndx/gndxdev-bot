@@ -1,18 +1,18 @@
 {
   "name": "gndxdev-bot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "gndxdev-bot for twitch",
   "main": "src/index.js",
   "dependencies": {
-    "dotenv": "^8.2.0",
-    "firebase-admin": "^11.5.0",
-    "node-cron": "^2.0.3",
-    "node-fetch": "^2.6.0",
-    "tmi.js": "^1.5.0",
-    "twitter": "^1.7.1"
+    "dotenv": "8.2.0",
+    "firebase-admin": "11.5.0",
+    "node-cron": "2.0.3",
+    "node-fetch": "2.6.0",
+    "tmi.js": "1.5.0",
+    "twitter": "1.7.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "nodemon": "2.0.4"
   },
   "scripts": {
     "start": "node .",
